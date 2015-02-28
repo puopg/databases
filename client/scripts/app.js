@@ -1,7 +1,7 @@
 // backbone implementation
 var Message = Backbone.Model.extend({
   url : "http://127.0.0.1:3000/chatterbox",
-  defaults : {username: '',
+  defaults : {sentBy: '',
              text: ''}
 });
 
@@ -20,8 +20,8 @@ var Messages = Backbone.Collection.extend({
 
   parse: function(response, options) {
     results = [];
-    for (var i = response.results.length-1; i >= 0; i--) {
-      results.push(response.results[i]);
+    for (var i = response.length-1; i >= 0; i--) {
+      results.push(response[i]);
     }
     return results;
   }
@@ -43,13 +43,14 @@ var FormView = Backbone.View.extend({
     var $text = this.$('#sendMessageBoxText');
     var $user = this.$('#sendMessageBoxUser');
     var room = $('#roomChoiceText').val();
-
+    var createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
     this.startSpinner();
 
     this.collection.create({
-      username: $user.val(),
+      sentBy: $user.val(),
       text: $text.val(),
-      roomname: room
+      roomname: room,
+      createdAt: createdAt,
     });
 
     $text.val('');
@@ -88,8 +89,8 @@ var FormView = Backbone.View.extend({
 
 var MessageView = Backbone.View.extend({
 
-  template: _.template('<div class="chat" data-id="<%= objectId %>"> \
-                      <div class="user <%- friend %>" data-user="<%- username %>"><%- username %></div> \
+  template: _.template('<div class="chat" data-id="<%= id %>"> \
+                      <div class="user <%- friend %>" data-user="<%- sentBy %>"><%- sentBy %></div> \
                       <div class="text"><%- text %></div> \
                       </div>'),
 
@@ -136,9 +137,9 @@ var MessagesView = Backbone.View.extend({
   },
 
   renderMessage: function(message) {
-    if (!this.collection.displayedMessages[message.get('objectId')]) {
+    if (!this.collection.displayedMessages[message.get('id')]) {
       var messageView = new MessageView({model: message});
-      var name = message.get('username');
+      var name = message.get('sentBy');
 
       // If the message's user is found in our friends list, add friend attribute
       if (this.collection.friends[name])
@@ -148,7 +149,7 @@ var MessagesView = Backbone.View.extend({
 
       var newElement = messageView.render();
       this.$el.prepend(newElement);
-      this.collection.displayedMessages[message.get('objectId')] = true;
+      this.collection.displayedMessages[message.get('id')] = true;
     }
   }
 });

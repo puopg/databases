@@ -5,6 +5,7 @@ var mysql = require('mysql');
 // and to the database "chat".
 var dbConnection;
 
+
 exports.connectToDB = function(){
   dbConnection = mysql.createConnection({
     user: "root",
@@ -12,28 +13,22 @@ exports.connectToDB = function(){
     database: "chat"
   });
   dbConnection.connect();
-
-  return dbConnection;
 };
 
 
-exports.insertToDB = function(message){
+exports.insertToDB = function(message, callback){
   // user, message, room, time
-  var queryString = 'INSERT INTO chat';
-  var queryArgs = {user: message.username, message: message.text,
-                   room: message.roomname, time: 50};
+  var queryString = 'INSERT INTO messages SET ?';
+  var queryArgs = {text: message.text, sentBy: message.sentBy,
+                   roomname: message.roomname, createdAt: message.createdAt};
 
-  dbConnection.query(queryString, queryArgs, function(err, results) {
-          done();
-  });
+  dbConnection.query(queryString, queryArgs, callback);
 };
 
 
-exports.retrieveMessagesFromDB = function(){
-  var queryString = 'SELECT * FROM chat';
+exports.retrieveMessagesFromDB = function(callback){
+  var queryString = 'SELECT * FROM messages';
   var queryArgs = '';
 
-  dbConnection.query(queryString, queryArgs, function(err, results) {
-          done();
-  });
+  dbConnection.query(queryString, queryArgs, callback);
 };

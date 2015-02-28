@@ -14,18 +14,18 @@ USE chat;
 -- SET FOREIGN_KEY_CHECKS=0;
 
 -- ---
--- Table 'chat'
+-- Table 'messages'
 --
 -- ---
 
-DROP TABLE IF EXISTS `chat`;
+DROP TABLE IF EXISTS `messages`;
 
-CREATE TABLE `chat` (
+CREATE TABLE `messages` (
   `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `user` VARCHAR(30) NULL DEFAULT NULL,
-  `message` VARCHAR(140) NULL DEFAULT NULL,
-  `room` VARCHAR(30) NULL DEFAULT NULL,
-  `time` TIME NULL DEFAULT NULL,
+  `text` VARCHAR(140) NULL DEFAULT NULL,
+  `sentBy` VARCHAR(30) NULL DEFAULT NULL,
+  `roomname` VARCHAR(30) NULL DEFAULT NULL,
+  `createdAt` DATETIME NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -38,12 +38,12 @@ CREATE TABLE `chat` (
 -- Table Properties
 -- ---
 
--- ALTER TABLE `chat` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+-- ALTER TABLE `messages` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- ---
 -- Test Data
 -- ---
 
--- INSERT INTO `chat` (`id`,`user`,`message`,`room`,`time`) VALUES
+-- INSERT INTO `messages` (`id`,`text`,`sentBy`,`roomname`,`createdAt`) VALUES
 -- ('','','','','');
 

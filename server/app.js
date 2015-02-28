@@ -19,7 +19,10 @@ app.use(morgan('dev'));
 app.use(parser.json());
 
 // Set up our routes
-app.use("/classes", router);
+app.use("/", router);
+
+// Connect to the SQL database
+db.connectToDB();
 
 // Serve the client files
 app.use(express.static(__dirname + "/../client"));
