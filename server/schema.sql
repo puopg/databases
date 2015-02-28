@@ -2,16 +2,48 @@ CREATE DATABASE chat;
 
 USE chat;
 
-CREATE TABLE messages (
-  /* Describe your table here.*/
+
+
+
+
+-- ---
+-- Globals
+-- ---
+
+-- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+-- SET FOREIGN_KEY_CHECKS=0;
+
+-- ---
+-- Table 'chat'
+--
+-- ---
+
+DROP TABLE IF EXISTS `chat`;
+
+CREATE TABLE `chat` (
+  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
+  `user` VARCHAR(30) NULL DEFAULT NULL,
+  `message` VARCHAR(140) NULL DEFAULT NULL,
+  `room` VARCHAR(30) NULL DEFAULT NULL,
+  `time` TIME NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
 );
 
-/* Create other tables and define schemas for them here! */
+-- ---
+-- Foreign Keys
+-- ---
 
 
+-- ---
+-- Table Properties
+-- ---
 
+-- ALTER TABLE `chat` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-/*  Execute this file from the command line by typing:
- *    mysql -u root < server/schema.sql
- *  to create the database and the tables.*/
+-- ---
+-- Test Data
+-- ---
+
+-- INSERT INTO `chat` (`id`,`user`,`message`,`room`,`time`) VALUES
+-- ('','','','','');
 
