@@ -10,8 +10,12 @@ module.exports = {
       var url_parts = url.parse(req.url, true);
       var query = url_parts.query;
 
+      // On a GET request to chatterbox,
+      // insert the message into the database and also the cache
+      // Then, if we need to filter our messages by roomname, do so
+      // and then write that to the response.
       models.chatterbox.get(function(messages){
-        var retString = JSON.stringify(models.messages);
+        var retString = JSON.stringify(messages);
         if(query.where){
           var roomname = JSON.parse(query.where).roomname;
           var filteredMessages = getMessagesByRoomname(models.messages, roomname);
