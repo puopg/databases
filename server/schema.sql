@@ -3,10 +3,6 @@ CREATE DATABASE chat;
 USE chat;
 
 
-
-
-
-
 -- ---
 -- Globals
 -- ---

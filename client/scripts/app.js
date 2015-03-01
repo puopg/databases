@@ -32,11 +32,21 @@ var FormView = Backbone.View.extend({
 
   events: {
     "click #sendMessageButton": "handleSubmit",
-    "click #roomChoiceButton": "handleRoomChange"
+    "click #roomChoiceButton": "handleRoomChange",
+    "keydown #sendMessageBoxText": "handleSubmitOnEnter"
   },
 
   initialize: function(){
+    this.render();
     this.collection.on('sync', this.stopSpinner, this);
+  },
+  handleSubmitOnEnter: function() {
+    if (!e) { var e = window.event; }
+    // Enter is pressed
+    if (e.keyCode == 13 && !e.shiftKey) { 
+      e.preventDefault();
+      this.handleSubmit();
+    }
   },
 
   handleSubmit: function() {
@@ -44,15 +54,20 @@ var FormView = Backbone.View.extend({
     var $user = this.$('#sendMessageBoxUser');
     var room = $('#roomChoiceText').val();
     var createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    var letters = /^[A-Za-z0-9]+$/;
+
     this.startSpinner();
-
-    this.collection.create({
-      sentBy: $user.val(),
-      text: $text.val(),
-      roomname: room,
-      createdAt: createdAt,
-    });
-
+    if($user.val().match(letters) && $text.val() !== '') {
+      this.collection.create({
+        sentBy: $user.val(),
+        text: $text.val(),
+        roomname: room,
+        createdAt: createdAt,
+      });
+    }
+    else {
+      console.log("Invalid input, username must be alphanumeric and message cannot be empty!");
+    }
     $text.val('');
   },
 
@@ -71,6 +86,9 @@ var FormView = Backbone.View.extend({
     $('#messageBox').children().remove();
 
     this.collection.loadMessages();
+
+    this.$('#currentRoom').data('roomname', room);
+    this.render();
   },
 
   startSpinner: function() {
@@ -83,8 +101,12 @@ var FormView = Backbone.View.extend({
     this.$('.spinner').fadeOut('fast');
     this.$('#sendMessageButton').attr('disabled', null);
     this.$('#roomChoiceButton').attr('disabled', null);
-  }
+  },
 
+  render: function() {
+    var room = this.$('#currentRoom').data('roomname');
+    this.$('#currentRoom').text('Currently viewing: ' + room);
+  }
 });
 
 var MessageView = Backbone.View.extend({

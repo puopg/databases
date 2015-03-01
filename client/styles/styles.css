@@ -59,6 +59,19 @@ form input[type=text] {
     padding: 5px;
 }
 
+#currentRoom {
+    font-size: 12px;
+}
+
+#sendMessageButton {
+    margin-bottom: 10px;
+}
+
+#sendMessageBoxUser{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 .chat {
     padding: 5px;
     margin-bottom: 5px;

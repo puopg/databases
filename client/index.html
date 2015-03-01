@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="styles/styles.css">
 
     <!-- dependencies -->
+    <script src="scripts/utils.js"></script>
     <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="bower_components/backbone/backbone.js"></script>
@@ -14,20 +15,24 @@
   </head>
   <body>
     <div id="main">
-      <h1>chatterbox</h1>
+      <h1>chatterbox
+        <div id='currentRoom' data-roomname=''>Currently viewing: </div>
+      </h1>
+
       <div class='spinner' ><img src='images/spiffygif_46x46.gif'></div>
       <h3></h3>
       <div id='roomChoiceBox' class='inputDiv'>
-        <h4>Select a Chatroom</h4>
-        <input id='roomChoiceText' type='text'></input>
+        <input id='roomChoiceText' type='text' placeholder="Enter a room"></input>
         <button id='roomChoiceButton'>Change Rooms</button>
       </div>
       <div id='sendMessageBox' class='inputDiv'>
-        <h4>Send a Message</h4>
-        Username<input id='sendMessageBoxUser' type='text'></input>
-        Message<input id='sendMessageBoxText' type='text'></input>
+        Username: <input id='sendMessageBoxUser' type='text' placeholder="Enter a username"></input>
+
+        <textarea rows="4" cols="50" id='sendMessageBoxText' type='text' maxlength="140" placeholder="Enter a message" onkeyup="textCounter(this,'counter',140);" ></textarea>
+        <input disabled  maxlength="3" size="3" value="140" id="counter">
+
+         <button id='sendMessageButton'>Send message</button>
       </div>
-      <button id='sendMessageButton'>Send message</button>
       <!-- Your HTML goes here! -->
       <div id='messageBox'>
       </div>
@@ -41,7 +46,7 @@
 
           setInterval(function(){
             messages.loadMessages();
-          },1000);
+          },5000);
         });
       </script>
     </div>
