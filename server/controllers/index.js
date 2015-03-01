@@ -9,10 +9,9 @@ module.exports = {
       // Parse the URL to get an object
       var url_parts = url.parse(req.url, true);
       var query = url_parts.query;
-      var retString = JSON.stringify(models.messages);
 
       models.chatterbox.get(function(messages){
-        res.writeHead(200);
+        var retString = JSON.stringify(models.messages);
         if(query.where){
           var roomname = JSON.parse(query.where).roomname;
           var filteredMessages = getMessagesByRoomname(models.messages, roomname);
@@ -20,6 +19,7 @@ module.exports = {
           // Set the object to return as a new object with the filtered results
           retString = JSON.stringify(filteredMessages);
         }
+        res.writeHead(200);
         res.end(retString);
       });
     }, // a function which handles a get request for all messages

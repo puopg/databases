@@ -17,17 +17,42 @@ exports.connectToDB = function(){
 
 
 exports.insertToDB = function(message, callback){
-  // user, message, room, time
   var queryString = 'INSERT INTO messages SET ?';
-  var queryArgs = {text: message.text, sentBy: message.sentBy,
+  var queryArgs = {text: message.text, id_user: message.sentBy,
                    roomname: message.roomname, createdAt: message.createdAt};
 
   dbConnection.query(queryString, queryArgs, callback);
 };
 
-
 exports.retrieveMessagesFromDB = function(callback){
   var queryString = 'SELECT * FROM messages';
+  var queryArgs = '';
+
+  dbConnection.query(queryString, queryArgs, callback);
+};
+
+exports.retrieveUsersFromDB = function(callback){
+  var queryString = 'SELECT * FROM users';
+  var queryArgs = '';
+
+  dbConnection.query(queryString, queryArgs, callback);
+};
+
+exports.insertUserToDB = function(username, callback){
+  var queryString = 'INSERT INTO users SET ?';
+  var queryArgs = {username: username};
+
+  dbConnection.query(queryString, queryArgs, callback);
+};
+
+exports.findUserInDB = function(field, user, callback){
+  var queryString = 'SELECT * FROM users WHERE ' + field +'=' + dbConnection.escape(user);
+
+  dbConnection.query(queryString, callback);
+};
+
+exports.retrieveFriendsFromDB = function(callback){
+  var queryString = 'SELECT * FROM users';
   var queryArgs = '';
 
   dbConnection.query(queryString, queryArgs, callback);
